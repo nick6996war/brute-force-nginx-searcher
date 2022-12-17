@@ -91,7 +91,7 @@ c = Counter(ipList)
 answ =str(c).replace(',','\n')
 answ = answ[9:]
 answ = answ[:-2]
-print(answ)
+print("\n"+answ)
 with io.open("exit.txt", "w", encoding="utf-8", errors='ignore') as exitFile:
     exitFile.write(answ)
-print('output saved to file exit.txt')
+print('\noutput saved to file exit.txt')
