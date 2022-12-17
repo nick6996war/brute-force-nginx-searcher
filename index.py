@@ -5,6 +5,7 @@ import io
 import os
 import re
 from collections import Counter
+from alive_progress import alive_bar
 
 import os
 
@@ -67,21 +68,24 @@ pathFile.close()
 print(f"All: {counter} files.")
 with io.open("pathFile.txt", 'r', encoding='utf8', errors='ignore') as f:
     pathText = f.read().splitlines()
-    
-    for path in pathText:
-        try:
-            with io.open(path, 'r',encoding='utf8', errors='ignore') as dataF:
-                textfile = dataF.read().splitlines()
-            dataF.close()
-          
+    with alive_bar(counter, dual_line=True, title='Alphabet') as bar:
+        
+        for path in pathText:
+            bar.text = f'-> Reading file: {path}, please wait...'
+            try:
+                with io.open(path, 'r',encoding='utf8', errors='ignore') as dataF:
+                    textfile = dataF.read().splitlines()
+                dataF.close()
+            
 
-            for line in textfile:
-                ip = re.search(r"([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})", line)
-                if  ip != None:
-                    if " 401 "in line:
-                        ipList.append(ip.group(0))
-        except:
-            print('error:' + str(error) + '\n'+ path)
+                for line in textfile:
+                    ip = re.search(r"([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})", line)
+                    if  ip != None:
+                        if " 401 "in line:
+                            ipList.append(ip.group(0))
+            except:
+                print('error:' + str(error) + '\n'+ path)
+            bar()
 
 c = Counter(ipList) 
 answ =str(c).replace(',','\n')
@@ -90,3 +94,4 @@ answ = answ[:-2]
 print(answ)
 with io.open("exit.txt", "w", encoding="utf-8", errors='ignore') as exitFile:
     exitFile.write(answ)
+print('output saved to file exit.txt')
