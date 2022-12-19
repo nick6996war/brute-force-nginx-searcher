@@ -9,3 +9,5 @@ before start yo must run powershell as admin
 run cmd
 
 **py index.py**
+
+At version 1.1 will be added  the ability to select the tiwe interval
